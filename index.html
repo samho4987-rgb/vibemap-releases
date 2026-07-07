@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바이브맵 다운로드</title>
+<meta name="description" content="바이브맵 — 부동산 매물 지도 프로그램 설치 파일 다운로드">
+<style>
+  :root {
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --text: #1e293b;
+    --muted: #64748b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .wrap { width: 100%; max-width: 560px; padding: 48px 20px 32px; }
+  .logo {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    margin-bottom: 8px;
+  }
+  .logo-mark {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 22px; font-weight: 800;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
+  }
+  h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .tagline { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 36px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px 28px; text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  .version-badge {
+    display: inline-block; background: #eff6ff; color: var(--blue);
+    font-size: 14px; font-weight: 700; padding: 4px 14px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .dl-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 16px 24px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 18px; font-weight: 700; border-radius: 12px;
+    transition: background .15s, transform .1s;
+  }
+  .dl-btn:hover { background: var(--blue-dark); }
+  .dl-btn:active { transform: scale(.98); }
+  .dl-btn svg { flex-shrink: 0; }
+  .meta { margin-top: 14px; color: var(--muted); font-size: 13px; }
+  .status { color: var(--muted); font-size: 15px; padding: 12px 0; }
+  .notice {
+    margin-top: 24px; padding: 16px 18px; background: #fffbeb;
+    border: 1px solid #fde68a; border-radius: 12px;
+    color: #92400e; font-size: 14px; text-align: left; line-height: 1.6;
+    display: none;
+  }
+  .info {
+    margin-top: 28px; text-align: left;
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px 28px;
+  }
+  .info h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .info ul { list-style: none; }
+  .info li {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    padding-left: 20px; position: relative;
+  }
+  .info li::before { content: "✓"; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+  footer { margin-top: auto; padding: 24px; color: #94a3b8; font-size: 13px; text-align: center; }
+  footer a { color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-mark">V</div>
+    <h1>바이브맵</h1>
+  </div>
+  <p class="tagline">부동산 매물을 지도에서 한눈에 — 매물 관리 · 수집 프로그램</p>
+
+  <div class="card">
+    <div id="versionBadge" class="version-badge" style="display:none"></div>
+    <div id="status" class="status">최신 버전 확인 중…</div>
+    <a id="dlBtn" class="dl-btn" href="#" style="display:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Windows용 설치 파일 다운로드
+    </a>
+    <div id="meta" class="meta"></div>
+    <div id="notice" class="notice"></div>
+  </div>
+
+  <div class="info">
+    <h2>설치 안내</h2>
+    <ul>
+      <li>지원 환경: Windows 10 / 11 (64비트)</li>
+      <li>관리자 권한 없이 설치됩니다 (내 계정 폴더에 설치)</li>
+      <li>설치 후 실행하면 로그인 창이 표시됩니다 — 발급받은 계정으로 로그인하세요</li>
+      <li>새 버전이 나오면 프로그램이 자동으로 업데이트를 안내합니다</li>
+    </ul>
+  </div>
+
+  <div class="info">
+    <h2>설치가 안 되나요?</h2>
+    <ul>
+      <li>Windows 보호 화면(SmartScreen)이 뜨면 <b>추가 정보 → 실행</b>을 눌러 주세요</li>
+      <li>다운로드가 차단되면 브라우저의 다운로드 목록에서 <b>유지</b>를 선택하세요</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  © 바이브소장 · <a href="https://github.com/samho4987-rgb/vibemap-releases/releases" target="_blank" rel="noopener">전체 버전 기록</a>
+</footer>
+
+<script>
+(async function () {
+  const status = document.getElementById("status");
+  const btn = document.getElementById("dlBtn");
+  const badge = document.getElementById("versionBadge");
+  const meta = document.getElementById("meta");
+  const notice = document.getElementById("notice");
+  const RELEASES_PAGE = "https://github.com/samho4987-rgb/vibemap-releases/releases";
+
+  function showFallback(msg) {
+    status.style.display = "none";
+    notice.style.display = "block";
+    notice.innerHTML = msg +
+      '<br>문제가 계속되면 <a href="' + RELEASES_PAGE + '" target="_blank" rel="noopener">버전 기록 페이지</a>에서 직접 받아 주세요.';
+  }
+
+  try {
+    const res = await fetch(
+      "https://api.github.com/repos/samho4987-rgb/vibemap-releases/releases?per_page=20",
+      { headers: { Accept: "application/vnd.github+json" } }
+    );
+    if (!res.ok) throw new Error("API " + res.status);
+    const releases = await res.json();
+
+    // 최신 릴리즈부터 훑어 설치 파일(.exe 자산)이 있는 릴리즈를 찾는다
+    let found = null, asset = null;
+    for (const r of releases) {
+      if (r.draft || r.prerelease) continue;
+      const exe = (r.assets || []).find(a => a.name.toLowerCase().endsWith(".exe"));
+      if (exe) { found = r; asset = exe; break; }
+    }
+
+    if (!found) {
+      showFallback("설치 파일이 아직 준비되지 않았습니다.");
+      return;
+    }
+
+    status.style.display = "none";
+    badge.style.display = "inline-block";
+    badge.textContent = "최신 버전 " + found.tag_name;
+    btn.style.display = "inline-flex";
+    btn.href = asset.browser_download_url;
+
+    const sizeMB = Math.round(asset.size / 1048576);
+    const date = new Date(found.published_at);
+    meta.textContent =
+      asset.name + " · " + sizeMB + "MB · " +
+      date.getFullYear() + "." +
+      String(date.getMonth() + 1).padStart(2, "0") + "." +
+      String(date.getDate()).padStart(2, "0") + " 배포";
+  } catch (e) {
+    showFallback("버전 정보를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.");
+  }
+})();
+</script>
+</body>
+</html>
