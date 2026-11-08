@@ -3,184 +3,474 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>바이브맵 다운로드</title>
-<meta name="description" content="바이브맵 — 부동산 매물 지도 프로그램 설치 파일 다운로드">
+<title>VIBEmap 바이브맵 — 중개사무소 매물 · 손님 정리 (베타 모집)</title>
+<meta name="description" content="주소만 넣으면 건축물대장이 채워지고, 아침마다 우리 동네 매물을 모아 두고, 오늘 연락할 손님을 먼저 보여 주는 공인중개사 사무소용 PC 프로그램. 베타 한 달 무료.">
+<meta property="og:title" content="VIBEmap 베타 — 중개사무소 매물 · 손님 정리">
+<meta property="og:description" content="주소만 넣으면 매물 등록 · 아침마다 동네 매물 모으기 · 오늘 연락할 손님. 베타 15곳 한 달 무료.">
+<meta property="og:type" content="website">
 <style>
+  /* 2026-11-07 베타 모집 페이지 — 소개 + 신청 + 내려받기 한 장 (예전 다운로드 페이지를 대신함) */
   :root {
-    --blue: #2563eb;
-    --blue-dark: #1d4ed8;
-    --text: #1e293b;
-    --muted: #64748b;
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --border: #e2e8f0;
+    --teal: #0F766E; --teal-d: #115E59; --teal-l: #E6F3F1; --teal-ll: #F2F8F7;
+    --text: #1A1D23; --text2: #3D4450; --muted: #5B6472; --line: #DDE2E8;
+    --bg: #F7F8FA; --card: #FFFFFF; --amber: #9A5B00; --amber-bg: #FFF7E6; --red: #B42318;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  html { scroll-behavior: smooth; }
+  body { font: 17px/1.65 -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", sans-serif;
+         color: var(--text); background: var(--bg); word-break: keep-all; overflow-wrap: anywhere; }
+  a { color: var(--teal-d); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* 머리 */
+  header { position: sticky; top: 0; z-index: 10; background: rgba(247,248,250,.92); backdrop-filter: blur(8px);
+           border-bottom: 1px solid var(--line); }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -.3px; color: var(--text); text-decoration: none; }
+  .mark { width: 34px; height: 34px; border-radius: 10px; background: var(--teal); color: #fff; display: grid; place-items: center; font-size: 17px; }
+  .brand small { font-weight: 600; color: var(--muted); font-size: 14px; }
+  .brand { white-space: nowrap; }
+  header .btn-sm { width: auto !important; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; font-weight: 700;
+         text-decoration: none; cursor: pointer; border: 0; font-family: inherit; }
+  .btn-main { background: var(--teal); color: #fff; padding: 16px 26px; font-size: 18px; }
+  .btn-main:hover { background: var(--teal-d); }
+  .btn-sub { background: #fff; color: var(--teal-d); border: 1.5px solid var(--teal); padding: 14px 22px; font-size: 17px; }
+  .btn-sm { padding: 9px 16px; font-size: 15px; }
+
+  /* 첫 화면 */
+  .hero { padding: 48px 0 40px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+  .maker { margin-top: 10px; font-weight: 700; color: var(--text2); font-size: 16px; }
+  .maker::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); margin-right: 8px; vertical-align: 2px; }
+  .letter { margin-top: 22px; background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--teal); border-radius: 14px; padding: 22px 24px; font-size: 17px; color: var(--text2); }
+  .letter p + p { margin-top: 10px; }
+  .letter .sign { margin-top: 14px; font-weight: 700; color: var(--text); font-size: 16px; }
+  .next { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 24px; }
+  .next div { background: #fff; border: 1px dashed #A9C9C4; border-radius: 14px; padding: 18px 20px; }
+  .next b { display: block; font-size: 18px; margin-bottom: 4px; }
+  .next p { color: var(--text2); font-size: 15.5px; }
+  .soon { display: inline-block; font-size: 12px; font-weight: 700; color: var(--teal-d); background: var(--teal-l); border-radius: 6px; padding: 1px 8px; margin-bottom: 8px; }
+  @media (max-width: 860px) { .next { grid-template-columns: 1fr; } }
+  .pill { display: inline-block; background: var(--teal-l); color: var(--teal-d); font-weight: 700; font-size: 14px; padding: 5px 12px; border-radius: 999px; }
+  h1 { font-size: 40px; line-height: 1.25; letter-spacing: -1px; margin: 14px 0 14px; }
+  h1 em { font-style: normal; color: var(--teal); }
+  .lead { font-size: 19px; color: var(--text2); }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; color: var(--muted); font-size: 15px; }
+  .facts span::before { content: "✓ "; color: var(--teal); font-weight: 800; }
+
+  /* 화면 예시(그림) — 진짜 자료가 아님 */
+  .mock { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 32px rgba(17,24,39,.08); overflow: hidden; }
+  .mock-bar { display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: #FAFBFC; }
+  .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: #D9DDE3; }
+  .mock-body { padding: 16px 18px; }
+  .m-h { font-weight: 800; font-size: 20px; }
+  .m-h small { font-weight: 600; color: var(--muted); font-size: 14px; margin-left: 6px; }
+  .m-sub { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  .m-card { border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; margin-top: 9px; font-size: 14px; }
+  .m-card b { font-size: 15px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+  .t-amber { background: var(--amber-bg); color: var(--amber); }
+  .t-teal { background: var(--teal-l); color: var(--teal-d); }
+  .t-gray { background: #EEF0F3; color: var(--muted); }
+  .m-note { color: var(--amber); font-weight: 700; font-size: 13px; margin-top: 3px; }
+  .m-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .m-btns span { border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; font-size: 12.5px; font-weight: 600; }
+  .m-btns span.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .caption { font-size: 13px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+  section.block { padding: 56px 0; }
+  section.white { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  h2 { font-size: 30px; letter-spacing: -.6px; line-height: 1.3; }
+  .h2-sub { color: var(--muted); margin-top: 8px; font-size: 17px; }
+
+  /* 이런 분께 */
+  .who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .who div { background: var(--teal-ll); border-radius: 14px; padding: 18px; font-size: 16px; }
+  .who b { display: block; font-size: 17px; margin-bottom: 4px; }
+
+  /* 특장점 */
+  .feats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 28px; }
+  .feat { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .feat .no { width: 30px; height: 30px; border-radius: 9px; background: var(--teal); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+  .feat h3 { font-size: 21px; letter-spacing: -.3px; }
+  .feat p { color: var(--text2); font-size: 16px; }
+  .mini { background: var(--bg); border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: auto; }
+  .row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row span:first-child { color: var(--muted); }
+  .row span:last-child { font-weight: 700; text-align: right; }
+  .ok { color: var(--teal); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 13px; font-weight: 600; }
+  .chip.on { border-color: var(--teal); background: var(--teal-l); color: var(--teal-d); }
+  .quote { background: #fff; border-left: 3px solid var(--teal); padding: 6px 10px; border-radius: 6px; font-size: 13.5px; color: var(--text2); margin-bottom: 8px; }
+
+  /* 안심 */
+  .safe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .safe div { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: #fff; }
+  .safe b { display: block; font-size: 17px; margin-bottom: 4px; }
+  .safe p { color: var(--text2); font-size: 15.5px; }
+
+  /* 베타 진행 */
+  .steps { counter-reset: s; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+  .steps li { counter-increment: s; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; top: -12px; left: 16px; width: 26px; height: 26px; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 800; font-size: 14px; display: grid; place-items: center; }
+  .steps b { display: block; font-size: 17px; margin: 4px 0; }
+  .steps p { font-size: 15px; color: var(--text2); }
+  .terms { margin-top: 22px; background: var(--amber-bg); border: 1px solid #F3D58A; border-radius: 14px; padding: 16px 18px; font-size: 16px; }
+  .terms li { margin-left: 20px; }
+
+  /* 신청 · 내려받기 */
+  .apply { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 26px; }
+  .box { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+  .box.main { border: 2px solid var(--teal); }
+  .box h3 { font-size: 22px; margin-bottom: 6px; }
+  .box p { color: var(--text2); font-size: 16px; }
+  .box .btn { width: 100%; margin-top: 18px; }
+  .need { margin-top: 14px; font-size: 15px; color: var(--muted); }
+  .need li { margin-left: 18px; }
+  .ver { display: inline-block; background: var(--teal-l); color: var(--teal-d); font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 999px; margin-top: 10px; }
+  .dl-meta, .dl-status { font-size: 13.5px; color: var(--muted); margin-top: 10px; }
+  .dl-notice { display: none; margin-top: 12px; padding: 12px 14px; background: var(--amber-bg); border: 1px solid #F3D58A; border-radius: 12px; font-size: 14.5px; }
+  .tips { margin-top: 14px; font-size: 14.5px; color: var(--text2); }
+  .tips li { margin-left: 18px; }
+
+  /* 휴대폰에서 볼 때 — PC 로 이어 가기 */
+  .phone-only { display: none; }
+  .pc-link { margin-top: 14px; background: var(--teal-ll); border-radius: 12px; padding: 12px 14px; font-size: 15px; }
+  .pc-link code { display: block; font-weight: 800; font-size: 15px; margin: 4px 0 8px; word-break: break-all; font-family: inherit; color: var(--teal-d); }
+
+  /* 자주 묻는 것 */
+  details { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-top: 10px; }
+  summary { font-weight: 700; cursor: pointer; font-size: 17px; }
+  details p { margin-top: 8px; color: var(--text2); font-size: 16px; }
+
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; text-align: center; }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .hero .wrap, .feats, .apply { grid-template-columns: 1fr; }
+    .who, .safe { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 31px; }
+    .hero { padding: 30px 0 28px; }
+    section.block { padding: 40px 0; }
+    h2 { font-size: 25px; }
+    .phone-only { display: block; }
+    .brand small { display: none; }
   }
-  .wrap { width: 100%; max-width: 560px; padding: 48px 20px 32px; }
-  .logo {
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    margin-bottom: 8px;
+  @media (max-width: 420px) {
+    .steps { grid-template-columns: 1fr; }
+    .btn-main, .btn-sub { width: 100%; }
+    h1 { font-size: 28px; }
+    .lead { font-size: 17px; }
   }
-  .logo-mark {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 22px; font-weight: 800;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
-  }
-  h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
-  .tagline { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 36px; }
-  .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-    padding: 32px 28px; text-align: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,.05);
-  }
-  .version-badge {
-    display: inline-block; background: #eff6ff; color: var(--blue);
-    font-size: 14px; font-weight: 700; padding: 4px 14px; border-radius: 999px;
-    margin-bottom: 18px;
-  }
-  .dl-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    width: 100%; padding: 16px 24px;
-    background: var(--blue); color: #fff; text-decoration: none;
-    font-size: 18px; font-weight: 700; border-radius: 12px;
-    transition: background .15s, transform .1s;
-  }
-  .dl-btn:hover { background: var(--blue-dark); }
-  .dl-btn:active { transform: scale(.98); }
-  .dl-btn svg { flex-shrink: 0; }
-  .meta { margin-top: 14px; color: var(--muted); font-size: 13px; }
-  .status { color: var(--muted); font-size: 15px; padding: 12px 0; }
-  .notice {
-    margin-top: 24px; padding: 16px 18px; background: #fffbeb;
-    border: 1px solid #fde68a; border-radius: 12px;
-    color: #92400e; font-size: 14px; text-align: left; line-height: 1.6;
-    display: none;
-  }
-  .info {
-    margin-top: 28px; text-align: left;
-    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-    padding: 24px 28px;
-  }
-  .info h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-  .info ul { list-style: none; }
-  .info li {
-    font-size: 14px; color: var(--muted); line-height: 1.7;
-    padding-left: 20px; position: relative;
-  }
-  .info li::before { content: "✓"; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
-  footer { margin-top: auto; padding: 24px; color: #94a3b8; font-size: 13px; text-align: center; }
-  footer a { color: #94a3b8; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="logo">
-    <div class="logo-mark">V</div>
-    <h1>바이브맵</h1>
-  </div>
-  <p class="tagline">부동산 매물을 지도에서 한눈에 — 매물 관리 · 수집 프로그램</p>
 
-  <div class="card">
-    <div id="versionBadge" class="version-badge" style="display:none"></div>
-    <div id="status" class="status">최신 버전 확인 중…</div>
-    <a id="dlBtn" class="dl-btn" href="#" style="display:none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Windows용 설치 파일 다운로드
-    </a>
-    <div id="meta" class="meta"></div>
-    <div id="notice" class="notice"></div>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark">V</span>VIBEmap <small>바이브맵</small></a>
+    <a class="btn btn-main btn-sm" href="#apply">베타 신청</a>
   </div>
+</header>
 
-  <div class="info">
-    <h2>설치 안내</h2>
-    <ul>
-      <li>지원 환경: Windows 10 / 11 (64비트)</li>
-      <li>관리자 권한 없이 설치됩니다 (내 계정 폴더에 설치)</li>
-      <li>설치 후 실행하면 로그인 창이 표시됩니다 — 발급받은 계정으로 로그인하세요</li>
-      <li>새 버전이 나오면 프로그램이 자동으로 업데이트를 안내합니다</li>
-    </ul>
-  </div>
+<main id="top">
+  <!-- 첫 화면 -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="pill">베타 15곳 모집 · 한 달 무료</span>
+        <p class="maker">20년 넘게 현업에 있는 공인중개사가 직접 만들었어요</p>
+        <h1>매물 · 손님 정리,<br><em>아침마다 알아서</em> 챙겨 두는<br>중개사무소 프로그램</h1>
+        <p class="lead">주소만 넣으면 건축물대장이 채워지고, 매일 아침 우리 동네 매물을 모아 두고, 오늘 연락할 손님을 먼저 보여 드려요.</p>
+        <div class="cta">
+          <a class="btn btn-main" href="#apply">베타 신청하기</a>
+          <a class="btn btn-sub" href="#download">신청하셨으면 내려받기</a>
+        </div>
+        <div class="facts"><span>윈도우 PC 한 대</span><span>키 발급 필요 없음</span><span>손님 정보는 이 PC 에만</span></div>
+      </div>
 
-  <div class="info">
-    <h2>설치가 안 되나요?</h2>
-    <ul>
-      <li>Windows 보호 화면(SmartScreen)이 뜨면 <b>추가 정보 → 실행</b>을 눌러 주세요</li>
-      <li>다운로드가 차단되면 브라우저의 다운로드 목록에서 <b>유지</b>를 선택하세요</li>
-    </ul>
-  </div>
-</div>
+      <div>
+        <div class="mock" aria-label="오늘 화면 예시">
+          <div class="mock-bar"><i></i><i></i><i></i></div>
+          <div class="mock-body">
+            <div class="m-h">오늘 <small>11월 9일 월요일</small></div>
+            <div class="m-sub">남은 일 5개 · 어제에서 넘어온 일 1개</div>
+            <div class="m-card"><b>바다마을 아파트 매수 손님</b><span class="tag t-teal">오늘 집 보러 오는 날</span>
+              <div>11시 사무소 — 시간 확인 연락을 드려 보세요.</div>
+              <div class="m-btns"><span class="on">통화했어요</span><span>문자 보냈어요</span><span>다른 날로</span></div></div>
+            <div class="m-card"><b>원룸 월세 손님</b><span class="tag t-amber">답 듣는 날</span>
+              <div>지난주 본 집 "생각해 볼게요" — 오늘 답을 여쭤보세요.</div>
+              <div class="m-btns"><span class="on">답 들었어요</span><span>안 받았어요</span></div></div>
+            <div class="m-card"><b>확인 전화 — 새싹빌라 201호</b><span class="tag t-gray">30일 지남</span>
+              <div class="m-note">집주인께 값 · 상태가 그대로인지 여쭤보세요</div></div>
+          </div>
+        </div>
+        <p class="caption">화면 예시 · 이름과 매물은 꾸민 것이에요</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 이런 분께 -->
+  <section class="block white">
+    <div class="wrap">
+      <h2>이런 사무소에 맞아요</h2>
+      <div class="who">
+        <div><b>손님 메모가 흩어져 있다면</b>수첩, 카톡 나와의 채팅, 휴대폰 메모… 손님 이야기가 여기저기 있어 연락할 때를 놓친다면.</div>
+        <div><b>광고 하나에 손이 많이 간다면</b>새 매물을 받으면 면적 · 층 · 준공을 하나하나 찾아 적고, 광고 글을 다시 쓰느라 시간이 드는 분.</div>
+        <div><b>동네 매물을 매일 들여다본다면</b>아침마다 네이버로 우리 동네 새 매물, 내려간 매물을 확인하시는 분.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 특장점 -->
+  <section class="block" id="features">
+    <div class="wrap">
+      <h2>이렇게 줄여 드려요</h2>
+      <p class="h2-sub">지금 베타 판에 들어 있는 것만 적었어요.</p>
+      <div class="feats">
+
+        <div class="feat">
+          <span class="no">1</span>
+          <h3>주소만 넣으면 매물 등록</h3>
+          <p>지번이나 단지 이름을 넣으면 건축물대장에서 면적 · 층 · 용도 · 사용승인일을 불러와 칸을 채워요. 공공데이터 키를 따로 받으실 필요가 없어요.</p>
+          <div class="mini">
+            <div class="row"><span>주소</span><span>○○동 123-4</span></div>
+            <div class="row"><span>전용면적</span><span class="ok">84.9㎡ 불러옴</span></div>
+            <div class="row"><span>층 / 전체</span><span class="ok">7층 / 15층 불러옴</span></div>
+            <div class="row"><span>사용승인</span><span class="ok">2009.05 불러옴</span></div>
+          </div>
+        </div>
+
+        <div class="feat">
+          <span class="no">2</span>
+          <h3>아침마다 우리 동네 매물을 모아 둬요</h3>
+          <p>처음에 사무소 동과 둘레 동을 한 번 고르면, 매일 아침 PC 가 알아서 그 동네 네이버 매물을 모아 두고 새로 나온 매물과 내려간 매물을 알려 드려요.</p>
+          <div class="mini">
+            <div class="chips"><span class="chip on">○○동</span><span class="chip on">△△동</span><span class="chip">□□동</span></div>
+            <div class="row" style="margin-top:8px"><span>오늘 아침 모음</span><span>새 매물 12 · 내려감 7</span></div>
+          </div>
+        </div>
+
+        <div class="feat">
+          <span class="no">3</span>
+          <h3>'오늘' 한 화면</h3>
+          <p>켜면 오늘 연락할 손님, 집주인께 확인 전화할 매물, 오늘 약속이 먼저 나와요. 못 한 일은 내일 아침 다시 올라와요.</p>
+          <div class="mini">
+            <div class="row"><span>연락할 손님</span><span>3명</span></div>
+            <div class="row"><span>확인 전화</span><span>2건</span></div>
+            <div class="row"><span>오늘 약속</span><span>오후 2시 보여 드리기</span></div>
+          </div>
+        </div>
+
+        <div class="feat">
+          <span class="no">4</span>
+          <h3>손님 메모만 붙여 넣으면 칸이 채워져요</h3>
+          <p>카톡이나 휴대폰에 적어 둔 손님 메모를 그대로 붙여 넣으면, 찾는 집 · 동네 · 예산 · 입주 날짜를 알아서 골라 칸에 넣어 드려요. 타자가 불편하면 윈도우 받아쓰기(Win+H)로 말해도 돼요. 고칠 것만 고치시면 돼요.</p>
+          <div class="mini">
+            <div class="quote">"원룸 월세, 보증금 1천에 월 50 정도, 다음 달 입주요"</div>
+            <div class="chips"><span class="chip on">원룸</span><span class="chip on">월세</span><span class="chip on">보증금 1,000</span><span class="chip on">월 50</span><span class="chip on">다음 달</span></div>
+          </div>
+        </div>
+
+        <div class="feat">
+          <span class="no">5</span>
+          <h3>손님 조건으로 매물 찾기</h3>
+          <p>손님을 고르면 조건에 맞는 매물을 지도와 목록으로 바로 보여 드려요. 조건 하나만 다른 매물도 따로 모아 드려요.</p>
+          <div class="mini">
+            <div class="row"><span>조건에 맞는 매물</span><span class="ok">8개</span></div>
+            <div class="row"><span>한 조건만 다른 매물</span><span>5개</span></div>
+          </div>
+        </div>
+
+        <div class="feat">
+          <span class="no">6</span>
+          <h3>광고 글 · 유리창 광고</h3>
+          <p>매물 정보로 광고 글 요청문을 만들어 드려요. 쓰시는 AI(ChatGPT · Claude)에 붙여 넣고 답을 다시 붙이면, 표시 · 광고 규정에 걸릴 말을 검사해 매물특징 · 설명으로 나눠 저장해요. 유리창에 붙일 A4 광고도 바로 인쇄돼요.</p>
+          <div class="mini">
+            <div class="row"><span>규정 검사</span><span class="ok">걸리는 말 없음</span></div>
+            <div class="row"><span>유리창 광고</span><span>A4 인쇄</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 앞으로 붙일 것 -->
+  <section class="block white">
+    <div class="wrap">
+      <h2>앞으로 붙일 것</h2>
+      <p class="h2-sub">제 사무소에서는 이미 쓰고 있는 것들이에요. 다른 사무소 PC 에서도 동작하게 다듬어서 차례로 붙일 거예요.</p>
+      <div class="next">
+        <div><span class="soon">준비 중</span><b>광고 사이트 등록</b><p>VIBEmap 에 등록한 매물을 더블클릭하면 매물 정보를 불러와 광고 사이트에 등록해 드려요.</p></div>
+        <div><span class="soon">준비 중</span><b>블로그 글 자동 작성</b><p>매물 장부를 불러와 블로그 글을 쓰고, 건물 사진을 자동으로 찾아 카드 이미지까지 만들어 드려요.</p></div>
+        <div><span class="soon">준비 중</span><b>통화 녹음으로 매물 자동 등록</b><p>통화 내용을 분석해서 매물을 자동으로 등록하고, 아침마다 보여 드려요.</p></div>
+        <div><span class="soon">준비 중</span><b>실거래가로 적정가 보기</b><p>같은 단지 · 비슷한 면적의 실거래가를 모아 해당 매물의 적정가 범위를 보여 드려요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 만든 사람 -->
+  <section class="block">
+    <div class="wrap">
+      <h2>만든 사람</h2>
+      <div class="letter">
+        <p>부산에서 20년 넘게 중개사무소를 하고 있습니다.</p>
+        <p>아침이면 네이버를 열어 우리 동네에 새로 나온 매물과 내려간 매물을 하나하나 훑고, 낮에는 손님 전화를 받으며 여기저기 메모를 남기고, 새 매물을 받으면 건축물대장을 떼어 면적 · 층 · 준공을 옮겨 적은 뒤 광고 글을 또 씁니다. 그러다 보면 "다음 주에 다시 연락드릴게요" 해 놓고 놓치는 손님이 생깁니다. 이 일들이 지겨워서, 제 사무소에서 쓰려고 프로그램을 직접 만들었습니다.</p>
+        <p>쓰면서 불편한 곳을 하나씩 고쳐 왔고, 지금도 매일 이 프로그램으로 하루를 시작합니다.</p>
+        <p>이제 다른 사무소에서도 쓸모가 있는지 알고 싶습니다. 한 달 동안 편하신 만큼만 써 보시고, 좋은 점보다 불편한 점을 솔직하게 말씀해 주세요. 그 말씀으로 고쳐서 정식판을 만들겠습니다.</p>
+        <p class="sign">— 제11회 공인중개사</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 안심 -->
+  <section class="block white">
+    <div class="wrap">
+      <h2>걱정하실 부분</h2>
+      <p class="h2-sub">같은 중개사가 만든 것이라 더 궁금하실 수 있어요. 손님 정보는 만든 사람도 볼 수 없어요.</p>
+      <div class="safe">
+        <div><b>손님 정보는 이 PC 에만</b><p>손님 이름 · 전화번호 · 메모와 적어 두신 매물은 사무소 PC 에만 저장돼요. 만든 사람에게 오는 것은 베타 코드, 누르신 👍/👎와 한 줄 의견, 기능을 쓴 횟수뿐이에요.</p></div>
+        <div><b>키 · 설정 없이 바로</b><p>카카오 · 공공데이터 키를 받으실 필요가 없어요. 건축물대장과 지도 찾기는 VIBEmap 서버가 국토부 · 카카오에 대신 물어봐 드려요. 어느 사무소가 어느 건물을 찾았는지는 서버에 남기지 않아요.</p></div>
+        <div><b>관리자 권한 없이 설치</b><p>내 계정 폴더에 설치돼요. 다 쓰시고 지워도 넣어 두신 자료는 PC 에 남아요.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 베타 진행 -->
+  <section class="block">
+    <div class="wrap">
+      <h2>베타는 이렇게 진행돼요</h2>
+      <ol class="steps">
+        <li><b>신청</b><p>사무소 정보와 지금 일하는 방식을 여쭤봐요. 휴대폰으로도 돼요.</p></li>
+        <li><b>베타 코드 받기</b><p>신청을 마치면 화면에 코드가 바로 나와요. 캡처해 두세요.</p></li>
+        <li><b>PC 에 설치</b><p>사무소 윈도우 PC 에서 내려받아 설치하고, 처음 켤 때 코드를 넣어요.</p></li>
+        <li><b>한 달 써 보기</b><p>가끔 오른쪽 아래 한 줄 질문에 👍/👎 만 눌러 주세요(2초). 불편한 점은 언제든 [의견&nbsp;보내기]로.</p></li>
+      </ol>
+      <div class="terms">
+        <ul>
+          <li>베타 한 달은 <b>무료</b>예요. 따로 전화드리지 않아요.</li>
+          <li>불편한 점이나 바라는 기능은 프로그램 안 <b>[의견&nbsp;보내기]</b>로 언제든 보내 주세요. 2주쯤 되면 3분짜리 짧은 설문을, 25일쯤 되면 끝 설문(7분)을 프로그램이 알려 드려요.</li>
+          <li>보내 주신 의견이 기능 보완 · 수정에 <b>뽑힌 사무소</b>에는 <b>정식판을 몇 달 무료</b>로 드려요. 설문에 적어 주신 의견도 똑같이 봐요.</li>
+          <li>지금은 <b>윈도우 PC 한 대</b>로 시작해요.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 신청 · 내려받기 -->
+  <section class="block white" id="apply">
+    <div class="wrap">
+      <h2>신청하고 내려받기</h2>
+      <div class="apply">
+        <div class="box main">
+          <h3>① 베타 신청</h3>
+          <p>설문에 답하시면 끝 화면에 <b>베타 코드</b>가 나와요. 신청 암호는 모집 안내를 받으신 대화방 글에 있어요.</p>
+          <a class="btn btn-main" id="applyBtn" href="https://script.google.com/macros/s/AKfycbw0sG6G0sjmrCAUvaQ-fxFRyKVAceXrBHdw1XK7Eu7ygQW6IjR2K7VJ5FiDvZeVZ-V4Yw/exec" target="_blank" rel="noopener">베타 신청하기</a>
+          <ul class="need">
+            <li>중개사무소 등록번호 · 대표 연락처가 필요해요</li>
+            <li>코드를 잃어버리셨으면 <a href="https://script.google.com/macros/s/AKfycbw0sG6G0sjmrCAUvaQ-fxFRyKVAceXrBHdw1XK7Eu7ygQW6IjR2K7VJ5FiDvZeVZ-V4Yw/exec?page=find" target="_blank" rel="noopener">코드 다시 보기</a></li>
+          </ul>
+        </div>
+
+        <div class="box" id="download">
+          <h3>② 윈도우 PC 에 내려받기</h3>
+          <p>사무소 <b>윈도우 PC</b> 에서 받아 설치해 주세요. 처음 켤 때 베타 코드를 넣으면 돼요.</p>
+          <div id="verBadge" class="ver" style="display:none"></div>
+          <div id="dlStatus" class="dl-status">최신 설치 파일을 찾는 중…</div>
+          <a id="dlBtn" class="btn btn-sub" href="https://github.com/samho4987-rgb/vibemap-releases/releases" style="display:none">설치 파일 내려받기</a>
+          <div id="dlMeta" class="dl-meta"></div>
+          <div id="dlNotice" class="dl-notice"></div>
+          <div class="pc-link phone-only">
+            지금 <b>휴대폰</b>으로 보고 계시면, PC 에서 이 주소를 열어 주세요.
+            <code id="pageUrl">samho4987-rgb.github.io/vibemap-releases</code>
+            <button class="btn btn-sub btn-sm" id="copyBtn" type="button">주소 복사</button>
+          </div>
+          <ul class="tips">
+            <li>'Windows에서 PC를 보호했습니다'가 뜨면 <b>추가 정보 → 실행</b></li>
+            <li>브라우저가 내려받기를 막으면 다운로드 목록에서 <b>유지</b></li>
+            <li id="guideLi" style="display:none"><a id="guideLink" href="#" target="_blank" rel="noopener">설치 안내 한 장 보기</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 자주 묻는 것 -->
+  <section class="block">
+    <div class="wrap">
+      <h2>자주 묻는 것</h2>
+      <details><summary>돈이 드나요?</summary><p>베타 한 달은 무료예요. 정식판 값은 베타에서 여쭤본 뒤 정해요. 보내 주신 의견이 기능 보완 · 수정에 뽑힌 사무소는 정식판을 몇 달 무료로 드려요.</p></details>
+      <details><summary>맥에서도 되나요?</summary><p>베타는 윈도우 10 · 11 PC 만이에요.</p></details>
+      <details><summary>지금 쓰는 중개 프로그램이 있어도 되나요?</summary><p>네. 함께 쓰셔도 돼요. 베타의 목적이 어떤 일에 실제로 쓰시는지 보는 것이라, 편하신 만큼만 써 보세요.</p></details>
+      <details><summary>컴퓨터를 꺼 두면 아침 모으기는요?</summary><p>정한 시각(처음엔 아침 7시 30분)에 PC 가 꺼져 있었으면, 켜지자마자 모아요. 프로그램 창을 열어 두지 않아도 돼요.</p></details>
+      <details><summary>손님 정보가 밖으로 나가나요?</summary><p>아니요. 손님 정보와 적어 두신 매물은 그 PC 에만 있어요. 매물 등록에서 건물을 찾을 때만 그 건물 지번이 VIBEmap 서버를 거쳐 국토부 건축물대장 · 카카오 지도에 전달돼요. 서버에는 어느 사무소가 어느 건물을 찾았는지 남지 않아요.</p></details>
+      <details><summary>중간에 그만두고 싶으면요?</summary><p>시작 메뉴 → 바이브소장 → 바이브맵 제거로 지우시면 돼요. 신청 때 받은 정보는 그만 쓰시면 지워요.</p></details>
+    </div>
+  </section>
+</main>
 
 <footer>
-  © 바이브소장 · <a href="https://github.com/samho4987-rgb/vibemap-releases/releases" target="_blank" rel="noopener">전체 버전 기록</a>
+  <div class="wrap">
+    문의: 신청 안내를 받으신 대화방 · © 바이브소장 ·
+    <a href="https://github.com/samho4987-rgb/vibemap-releases/releases" target="_blank" rel="noopener">전체 버전 기록</a>
+  </div>
 </footer>
 
 <script>
+// 설치 안내 한 장 주소 — 공유 링크가 생기면 여기에 넣는다(비우면 숨김)
+var GUIDE_URL = "";
+
+(function () {
+  if (GUIDE_URL) { document.getElementById("guideLink").href = GUIDE_URL; document.getElementById("guideLi").style.display = ""; }
+  var url = location.host ? location.host + location.pathname.replace(/index\.html$/, "") : "samho4987-rgb.github.io/vibemap-releases/";
+  document.getElementById("pageUrl").textContent = url;
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var t = "https://" + url, b = this;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+      b.textContent = "복사했어요 — 카톡 '나와의 채팅'에 붙여 PC 에서 여세요";
+    }).catch(function () { b.textContent = "주소를 길게 눌러 복사해 주세요"; });
+  });
+})();
+
+// 최신 설치 파일 — GitHub 릴리즈에서 .exe 를 찾는다 (예전 다운로드 페이지와 같은 방식)
 (async function () {
-  const status = document.getElementById("status");
-  const btn = document.getElementById("dlBtn");
-  const badge = document.getElementById("versionBadge");
-  const meta = document.getElementById("meta");
-  const notice = document.getElementById("notice");
-  const RELEASES_PAGE = "https://github.com/samho4987-rgb/vibemap-releases/releases";
-
-  function showFallback(msg) {
-    status.style.display = "none";
-    notice.style.display = "block";
-    notice.innerHTML = msg +
-      '<br>문제가 계속되면 <a href="' + RELEASES_PAGE + '" target="_blank" rel="noopener">버전 기록 페이지</a>에서 직접 받아 주세요.';
+  var status = document.getElementById("dlStatus"), btn = document.getElementById("dlBtn"),
+      badge = document.getElementById("verBadge"), meta = document.getElementById("dlMeta"), notice = document.getElementById("dlNotice");
+  var RELEASES = "https://github.com/samho4987-rgb/vibemap-releases/releases";
+  var MIN_VER = 10700;   // v1.7.0 — 베타 판부터
+  function verNum(t) { var m = String(t).match(/(\d+)\.(\d+)\.(\d+)/); return m ? (+m[1]) * 10000 + (+m[2]) * 100 + (+m[3]) : 0; }
+  function fallback(msg) {
+    status.style.display = "none"; notice.style.display = "block";
+    notice.innerHTML = msg + '<br><a href="' + RELEASES + '" target="_blank" rel="noopener">버전 기록 페이지</a>에서 직접 받으실 수 있어요.';
   }
-
   try {
-    const res = await fetch(
-      "https://api.github.com/repos/samho4987-rgb/vibemap-releases/releases?per_page=20",
-      { headers: { Accept: "application/vnd.github+json" } }
-    );
+    var res = await fetch("https://api.github.com/repos/samho4987-rgb/vibemap-releases/releases?per_page=20",
+                          { headers: { Accept: "application/vnd.github+json" } });
     if (!res.ok) throw new Error("API " + res.status);
-    const releases = await res.json();
-
-    // 최신 릴리즈부터 훑어 설치 파일(.exe 자산)이 있는 릴리즈를 찾는다
-    let found = null, asset = null;
-    for (const r of releases) {
+    var rels = await res.json(), found = null, asset = null;
+    for (var i = 0; i < rels.length; i++) {
+      var r = rels[i];
       if (r.draft || r.prerelease) continue;
-      const exe = (r.assets || []).find(a => a.name.toLowerCase().endsWith(".exe"));
+      if (verNum(r.tag_name) < MIN_VER) continue;   // 베타 코드 넣는 칸이 없는 예전 판은 내놓지 않는다
+      var exe = (r.assets || []).find(function (a) { return a.name.toLowerCase().endsWith(".exe"); });
       if (exe) { found = r; asset = exe; break; }
     }
-
-    if (!found) {
-      showFallback("설치 파일이 아직 준비되지 않았습니다.");
-      return;
-    }
-
+    if (!found) { status.style.display = "none"; notice.style.display = "block";
+      notice.textContent = "베타 판 설치 파일을 올리는 중이에요. 조금 뒤 이 페이지를 새로 고침해 주세요."; return; }
     status.style.display = "none";
-    badge.style.display = "inline-block";
-    badge.textContent = "최신 버전 " + found.tag_name;
-    btn.style.display = "inline-flex";
-    btn.href = asset.browser_download_url;
-
-    const sizeMB = Math.round(asset.size / 1048576);
-    const date = new Date(found.published_at);
-    meta.textContent =
-      asset.name + " · " + sizeMB + "MB · " +
-      date.getFullYear() + "." +
-      String(date.getMonth() + 1).padStart(2, "0") + "." +
-      String(date.getDate()).padStart(2, "0") + " 배포";
+    badge.style.display = "inline-block"; badge.textContent = "최신 판 " + found.tag_name;
+    btn.style.display = "inline-flex"; btn.href = asset.browser_download_url;
+    var d = new Date(found.published_at);
+    meta.textContent = asset.name + " · " + Math.round(asset.size / 1048576) + "MB · " + d.getFullYear() + "." +
+      String(d.getMonth() + 1).padStart(2, "0") + "." + String(d.getDate()).padStart(2, "0") + " 배포";
   } catch (e) {
-    showFallback("버전 정보를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.");
+    fallback("최신 판 정보를 불러오지 못했어요. 잠시 뒤 새로 고침해 주세요.");
   }
 })();
 </script>
